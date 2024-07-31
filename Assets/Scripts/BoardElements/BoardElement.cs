@@ -41,7 +41,7 @@ public abstract class BoardElement : MonoBehaviour
         falling.toY = toY;
         falling.duration = (falling.fromY - toY) / speed;
         falling.progress = 0f;
-        transform.DOLocalMoveY(falling.toY, falling.duration).SetEase(Ease.OutBounce);
+        transform.DOLocalMoveY(falling.toY, falling.duration).SetEase(Ease.Linear);
         //enabled = true;
         return falling.duration;
     }
@@ -88,6 +88,11 @@ public abstract class BoardElement : MonoBehaviour
     public virtual float GetPopAnimationDuration()
     {
         return 0;
+    }
+
+    public void AlertMatchOnNeighborCell()
+    {
+        
     }
 }
 
