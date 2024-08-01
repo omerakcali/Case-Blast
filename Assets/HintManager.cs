@@ -10,7 +10,6 @@ public class HintManager : MonoBehaviour
 
     private List<int2> _checkedCoordinates= new();
 
-    public const int TNTCount =5;
     private void Awake()
     {
         GameManager.MoveMadeEvent += OnMoveMade;
@@ -33,7 +32,7 @@ public class HintManager : MonoBehaviour
                 if(_checkedCoordinates.Contains(c)) continue;
                 if (FindGroups(c))
                 {
-                    bool isTnt = _foundGroup.Count >= TNTCount;
+                    bool isTnt = _foundGroup.Count >= Board.TNTCellCount;
                     foreach (var coordinates in _foundGroup)
                     {
                         _checkedCoordinates.Add(coordinates);
@@ -111,6 +110,7 @@ public class HintManager : MonoBehaviour
             for (int j = 0; j < Board.Size.x; j++)
             {
                 var element = Board[i, j];
+                if(element == null) continue;
                 if (element.ElementType.IsDrop()) element.SetState("Default");
             }
         }

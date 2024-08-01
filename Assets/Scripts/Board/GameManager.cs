@@ -69,16 +69,20 @@ public class GameManager : MonoBehaviour
             var mouseUpCoordinate =  Board.ScreenToTileSpace(Input.mousePosition);
             if (_mouseDownCoordinate.Value.Equals(mouseUpCoordinate))
             {
-                if (Board.TryMove(_mouseDownCoordinate.Value))
+                if (Board.AreValidCoordinates(mouseUpCoordinate.Value))
                 {
-                    CurrentMoveCount--;
-                    MoveMadeEvent?.Invoke();
-                    StartCoroutine(CheckMoveCount());
+                    Board[mouseUpCoordinate.Value].OnClick(MakeMove);
                 }
             }
             _mouseDownCoordinate = null;
         }
-        
+    }
+
+    private void MakeMove()
+    {
+        CurrentMoveCount--;
+        MoveMadeEvent?.Invoke();
+        StartCoroutine(CheckMoveCount());
     }
 
     private IEnumerator CheckMoveCount()

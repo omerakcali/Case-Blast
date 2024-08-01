@@ -21,15 +21,13 @@ public class Board : MonoBehaviour
 
     [SerializeField] private BoardPoolManager BoardPoolManager;
     [SerializeField, Range(0.1f, 20f)] float DropSpeed = 8f;
-    [SerializeField, Range(0f, 10f)] float NewDropOffset = 2f;
+    [SerializeField, Range(0, 10)] int NewDropOffset = 2;
 
     public bool IsPlaying => !_levelFinished && !_grid.IsUndefined;
     private float _busyDuration;
-    private float _animationDuration;
-    public bool CanPlay => _busyDuration <= 0 && _animationDuration <= 0;
+    public bool CanPlay => _busyDuration <= 0;
 
     private Grid2D<BoardElement> _grid;
-
     public BoardElement this[int x, int y] => _grid[x, y];
     public BoardElement this[int2 c] => _grid[c];
 
@@ -38,6 +36,8 @@ public class Board : MonoBehaviour
     private float2 _tileOffset;
     private Sequence _mergeSequence;
     private bool _levelFinished;
+    
+    public const int TNTCellCount =5;
 
     public void StartNewGame(LevelInfo level)
     {
@@ -59,7 +59,6 @@ public class Board : MonoBehaviour
                 for (int x = 0; x < _grid.SizeX; x++)
                 {
                     _grid[x, y].Despawn();
-                    _grid[x, y] = null;
                 }
             }
         }
@@ -76,15 +75,19 @@ public class Board : MonoBehaviour
                 var type = CurrentLevel.PopulateRandomly
                     ? CurrentLevel.TypesToSpawn[Random.Range(0, CurrentLevel.TypesToSpawn.Count)]
                     : CurrentLevel.Grid[y * Size.x + x];
-                _grid[x, y] = SpawnBoardElement(type, x, y);
+                _grid[x, y] = SpawnBoardElement(type, x, y,this);
             }
         }
 
         LevelLoadEvent?.Invoke(CurrentLevel);
     }
 
-    BoardElement SpawnBoardElement(BoardElementType t, float x, float y) =>
-        BoardPoolManager.SpawnBoardElement(t, x + _tileOffset.x, y + _tileOffset.y);
+    BoardElement SpawnBoardElement(BoardElementType t, int x, int y,Board board) {
+        var element =BoardPoolManager.SpawnBoardElement(t, x + _tileOffset.x, y + _tileOffset.y);
+        element.SetBoard(this);
+        element.PositionOnBoard = new int2(x, y);
+        return element;
+    }
 
 
     public bool TryMove(int2 coordinates)
@@ -94,23 +97,23 @@ public class Board : MonoBehaviour
 
     List<int2> _openList = new();
     List<int2> _closedList = new();
-    private bool FindMatches(int2 selectedCoordinates) 
+    private bool FindMatches(int2 originCoordinates) 
     {
         MatchedCoordinates.Clear();
         _alertedBoardElements.Clear();
         _openList.Clear();
         _closedList.Clear();
-        if (_grid[selectedCoordinates].ElementType.IsSpecial())
+        if (_grid[originCoordinates].ElementType.IsSpecial())
         {
-            MatchedCoordinates.Add(selectedCoordinates);
+            MatchedCoordinates.Add(originCoordinates);
             return true;
         }
 
-        if (!_grid[selectedCoordinates].ElementType.IsDrop()) return false;
+        if (!_grid[originCoordinates].ElementType.IsDrop()) return false;
 
-        _openList.Add(selectedCoordinates);
-        MatchedCoordinates.Add(selectedCoordinates);
-        var selectedDropType = _grid[selectedCoordinates].ElementType;
+        _openList.Add(originCoordinates);
+        MatchedCoordinates.Add(originCoordinates);
+        var selectedDropType = _grid[originCoordinates].ElementType;
         while (_openList.Count > 0)
         {
             var tile = _openList[^1];
@@ -150,10 +153,6 @@ public class Board : MonoBehaviour
 
     public void DoWork()
     {
-        if (_animationDuration > 0f)
-        {
-            _animationDuration -= Time.deltaTime;
-        }
 
         if (_busyDuration > 0f)
         {
@@ -176,7 +175,7 @@ public class Board : MonoBehaviour
 
     void ProcessMatches()
     {
-        bool isMerge = MatchedCoordinates.Count >= 115000;
+        bool isMerge = MatchedCoordinates.Count >= TNTCellCount;
         Merge = isMerge
             ? new TileMerge(MatchedCoordinates[0],
                 BoardElementType.TNT)
@@ -185,17 +184,18 @@ public class Board : MonoBehaviour
         for (int m = 0; m < MatchedCoordinates.Count; m++)
         {
             var c = MatchedCoordinates[m];
-            _grid[c].Pop();
-            _grid[c] = null;
-            if (isMerge)
+            if (Merge.HasValue)
             {
                 Merge.Value.Origins.Add(c);
+            }
+            else
+            {
+                _grid[c].Pop();
             }
 
             AlertMatchNeighbors(c);
         }
 
-        NeedsFilling = true;
         if (Merge.HasValue) // handle merges into TNT
         {
             ProcessMerge();
@@ -213,16 +213,14 @@ public class Board : MonoBehaviour
         {
             var c = merge.Origins[i];
             _mergeSequence.Join(_grid[c].Merge(targetPosition));
-            _grid[c] = null;
         }
 
         _mergeSequence.AppendCallback(() =>
         {
             _grid[merge.Destination] =
-                SpawnBoardElement(merge.CreatedType, merge.Destination.x, merge.Destination.y);
+                SpawnBoardElement(merge.CreatedType, merge.Destination.x, merge.Destination.y,this);
         });
         _mergeSequence.AppendInterval(.1f); //padding
-        //_mergeSequence.AppendCallback(DropTiles);
         _busyDuration = Mathf.Max(
             _mergeSequence.Duration(), _busyDuration
         );
@@ -267,11 +265,12 @@ public class Board : MonoBehaviour
             {
                 var typeToSpawn = CurrentLevel.TypesToSpawn[Random.Range(0, CurrentLevel.TypesToSpawn.Count)];
                 tile = SpawnBoardElement(
-                    typeToSpawn, drop.coordinates.x, drop.fromY + NewDropOffset
+                    typeToSpawn, drop.coordinates.x, drop.fromY + NewDropOffset,this
                 );
             }
 
             _grid[drop.coordinates] = tile;
+            tile.PositionOnBoard = drop.coordinates;
             tile.SetSortingOrder(drop.coordinates.y);
             _busyDuration = Mathf.Max(
                 tile.Fall(drop.coordinates.y + _tileOffset.y, DropSpeed), _busyDuration
@@ -324,6 +323,12 @@ public class Board : MonoBehaviour
     public bool AreValidCoordinates(int2 c)
     {
         return _grid.AreValidCoordinates(c);
+    }
+
+    public void ElementDespawned(int2 positionOnBoard)
+    {
+        NeedsFilling = true;
+        _grid[positionOnBoard] = null;
     }
 }
 

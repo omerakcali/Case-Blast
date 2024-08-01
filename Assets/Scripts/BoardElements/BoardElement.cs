@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Unity.Mathematics;
 using UnityEngine;
 
 public abstract class BoardElement : MonoBehaviour
@@ -11,8 +12,9 @@ public abstract class BoardElement : MonoBehaviour
 
     [SerializeField] private List<BoardElementState> States = new();
     public abstract BoardElementType ElementType { get; }
+    public int2 PositionOnBoard { get; set; }
     private BoardElementPool<BoardElement> _pool;
-
+    
     [System.Serializable]
     struct FallingState
     {
@@ -20,11 +22,18 @@ public abstract class BoardElement : MonoBehaviour
     }
 
     FallingState falling;
-
+    protected Board _board;
     private void Awake()
     {
         if(States.All(a => a.Key != "Default")) States.Add(new BoardElementState("Default",SpriteRenderer.sprite));
     }
+
+    public void SetBoard(Board board)
+    {
+        _board = board;
+    }
+
+    public abstract void OnClick(Action makeMoveAction);
 
     public virtual void Pop()
     {
@@ -44,11 +53,16 @@ public abstract class BoardElement : MonoBehaviour
         instance.falling.progress = -1f;
         instance.transform.position = pos;
         instance.transform.SetParent(parent);
+        instance.SetState("Default");
         enabled = false;
         return instance;
     }
 
-    public void Despawn() => _pool.Recycle(this);
+    public void Despawn()
+    {
+        _board.ElementDespawned(PositionOnBoard);
+        _pool.Recycle(this);
+    }
 
     public float Fall(float toY, float speed)
     {
