@@ -54,8 +54,14 @@ public abstract class BoardElement : MonoBehaviour
         instance.transform.position = pos;
         instance.transform.SetParent(parent);
         instance.SetState("Default");
+        instance.OnSpawn();
         enabled = false;
         return instance;
+    }
+
+    public virtual void OnSpawn()
+    {
+        
     }
 
     public void Despawn()
@@ -75,7 +81,7 @@ public abstract class BoardElement : MonoBehaviour
         return falling.duration;
     }
 
-    void Update()
+    /*void Update()
     {
         if (falling.progress >= 0f)
         {
@@ -94,7 +100,7 @@ public abstract class BoardElement : MonoBehaviour
             }
             transform.localPosition = position;
         }
-    }
+    }*/
 
     public virtual void SetSortingOrder(int order)
     {

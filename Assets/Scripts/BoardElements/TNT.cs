@@ -8,19 +8,45 @@ public class TNT : BoardElement
 {
     [SerializeField] private Vector2Int ExplosionSize;
     public override BoardElementType ElementType => BoardElementType.TNT;
+
+    private bool _popped;
+    
     public override void OnClick(Action makeMoveAction)
     {
-        for (int i = 0; i < ExplosionSize.x; i++)
+        if (_popped)
         {
-            for (int j = 0; j < ExplosionSize.y; j++)
+            return;
+        }
+
+        Pop();
+        makeMoveAction.Invoke();
+    }
+
+    public override void OnSpawn()
+    {
+        _popped = false;
+    }
+
+    public override void Pop()
+    {
+        if (_popped)
+        {
+            return;
+        }
+        _popped = true;
+        for (int i = -ExplosionSize.x; i <= ExplosionSize.x; i++)
+        {
+            for (int j = -ExplosionSize.y; j <= ExplosionSize.y; j++)
             {
-                var c = new int2(PositionOnBoard.x- (ExplosionSize.x / 2)+i, (PositionOnBoard.y - ExplosionSize.y / 2)+j);
+                if(i==0 && j ==0) continue;
+                var c = new int2(PositionOnBoard.x+i, PositionOnBoard.y +j);
                 if (_board.AreValidCoordinates(c))
                 {
-                    _board[c].Pop();
+                    if(_board[c]!=null)
+                        _board[c].Pop();
                 }
             }
         }
-        makeMoveAction.Invoke();
+        base.Pop();
     }
 }
