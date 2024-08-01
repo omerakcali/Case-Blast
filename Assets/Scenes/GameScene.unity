@@ -440,8 +440,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardElementPrefabs:
-  - {fileID: 573300505736968896, guid: 6ec1547c9ed2cec4ba39eaad020fcdf3, type: 3}
-  - {fileID: 573300505736968896, guid: d6db47ac2031eb342b25495c174e0710, type: 3}
+  - {fileID: 5724545971298199540, guid: a02db6736a1d4c74c9688501c77fa2e0, type: 3}
+  - {fileID: 5724545971298199540, guid: 3280f6030201de542a3632265b31e2b8, type: 3}
+  - {fileID: 5724545971298199540, guid: 7b8d5fe71a2fe1841aae056316111a6d, type: 3}
+  - {fileID: 5724545971298199540, guid: 7a332f79f44140045a8cb15784d6e135, type: 3}
 --- !u!4 &1309450811
 Transform:
   m_ObjectHideFlags: 0
@@ -468,6 +470,7 @@ GameObject:
   - component: {fileID: 1819478733}
   - component: {fileID: 1819478732}
   - component: {fileID: 1819478734}
+  - component: {fileID: 1819478735}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -488,8 +491,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoardPoolManager: {fileID: 1309450810}
-  dropSpeed: 6.84
-  newDropOffset: 2
+  DropSpeed: 8
+  NewDropOffset: 2
 --- !u!4 &1819478733
 Transform:
   m_ObjectHideFlags: 0
@@ -519,6 +522,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelLibrary: {fileID: 11400000, guid: 7366ea8d14c140b469f6cb56dc327009, type: 2}
+  Board: {fileID: 1819478732}
+--- !u!114 &1819478735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819478730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f166f93ba8e50d4f9e62d67008888ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   Board: {fileID: 1819478732}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

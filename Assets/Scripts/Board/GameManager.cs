@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static event Action MoveMadeEvent;
+    public static event Action BoardPlayableEvent;
     public static event Action<bool> LevelFinishEvent;
     [SerializeField]
     private LevelLibrary LevelLibrary;
@@ -17,13 +18,24 @@ public class GameManager : MonoBehaviour
 
     public int CurrentMoveCount { get; private set; }
 
+    private bool _playableStateDirty=true;
+
     void Update ()
     {
         if (Board.IsPlaying)
         {
             if (Board.CanPlay) 
             {
+                if (_playableStateDirty)
+                {
+                    _playableStateDirty = false;
+                    BoardPlayableEvent?.Invoke();
+                }
                 HandleInput();
+            }
+            else
+            {
+                _playableStateDirty = true;
             }
             Board.DoWork();
         }

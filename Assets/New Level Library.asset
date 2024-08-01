@@ -19,7 +19,7 @@ MonoBehaviour:
     MoveCount: 25
     PopulateRandomly: 1
     Grid: 
-    TypesToSpawn: 0200000005000000
+    TypesToSpawn: 02000000050000000100000004000000
     Goals:
     - GoalType: 2
       Amount: 15

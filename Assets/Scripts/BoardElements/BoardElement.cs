@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
 public abstract class BoardElement : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer SpriteRenderer;
+
+    [SerializeField] private List<BoardElementState> States = new();
     public abstract BoardElementType ElementType { get; }
     private BoardElementPool<BoardElement> _pool;
 
@@ -17,9 +21,20 @@ public abstract class BoardElement : MonoBehaviour
 
     FallingState falling;
 
+    private void Awake()
+    {
+        if(States.All(a => a.Key != "Default")) States.Add(new BoardElementState("Default",SpriteRenderer.sprite));
+    }
+
     public virtual void Pop()
     {
         Despawn();
+    }
+
+    public virtual void SetState(string state)
+    {
+        var elementState = States.Find(s => s.Key == state);
+        SpriteRenderer.sprite = elementState.Sprite;
     }
 
     public BoardElement Spawn(Transform parent, Vector3 pos = new Vector3())
@@ -94,14 +109,27 @@ public abstract class BoardElement : MonoBehaviour
     {
         
     }
+    
+    [Serializable]
+    private class BoardElementState
+    {
+        public string Key;
+        public Sprite Sprite;
+
+        public BoardElementState(string key, Sprite sprite)
+        {
+            Key = key;
+            Sprite = sprite;
+        }
+    }
 }
+
 
 public enum BoardElementType
 {
     Empty = 0,
     GreenDrop = 1,
     BlueDrop = 2,
-    PurpleDrop = 3,
     YellowDrop = 4,
     RedDrop = 5,
     Box = 11,

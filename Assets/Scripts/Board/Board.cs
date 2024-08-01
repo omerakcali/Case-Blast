@@ -92,12 +92,14 @@ public class Board : MonoBehaviour
         return FindMatches(coordinates);
     }
 
+    List<int2> _openList = new();
+    List<int2> _closedList = new();
     private bool FindMatches(int2 selectedCoordinates) 
     {
         MatchedCoordinates.Clear();
         _alertedBoardElements.Clear();
-        List<int2> _openList = new();
-        List<int2> _closedList = new();
+        _openList.Clear();
+        _closedList.Clear();
         if (_grid[selectedCoordinates].ElementType.IsSpecial())
         {
             MatchedCoordinates.Add(selectedCoordinates);
@@ -317,6 +319,11 @@ public class Board : MonoBehaviour
                 _grid[verticalNeighbor].AlertMatchOnNeighborCell();
             }
         }
+    }
+
+    public bool AreValidCoordinates(int2 c)
+    {
+        return _grid.AreValidCoordinates(c);
     }
 }
 

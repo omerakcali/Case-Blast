@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 3455526647502567766}
   - component: {fileID: 573300505736968896}
   m_Layer: 0
-  m_Name: Blue
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,5 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 3924157139263228359}
+  States: []
   ParticleColor: {r: 0, g: 0, b: 0, a: 0}
   Type: 2
