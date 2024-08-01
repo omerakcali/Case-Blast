@@ -99,6 +99,7 @@ public class Board : MonoBehaviour
     List<int2> _closedList = new();
     private bool FindMatches(int2 originCoordinates) 
     {
+        if (_grid[originCoordinates] == null) return false;
         MatchedCoordinates.Clear();
         _alertedBoardElements.Clear();
         _openList.Clear();
@@ -127,6 +128,7 @@ public class Board : MonoBehaviour
 
                 var horizontalNeighbor = tile + new int2(i, 0);
                 if (_grid.AreValidCoordinates(horizontalNeighbor)
+                    && _grid[horizontalNeighbor] !=null
                     && !_closedList.Contains(horizontalNeighbor)
                     && !_openList.Contains(horizontalNeighbor)
                     && _grid[horizontalNeighbor].ElementType == selectedDropType)
@@ -137,6 +139,7 @@ public class Board : MonoBehaviour
 
                 var verticalNeighbor = tile + new int2(0, i);
                 if (_grid.AreValidCoordinates(verticalNeighbor)
+                    && _grid[verticalNeighbor] != null
                     && !_closedList.Contains(verticalNeighbor)
                     && !_openList.Contains(verticalNeighbor)
                     && _grid[verticalNeighbor].ElementType == selectedDropType)
@@ -241,7 +244,11 @@ public class Board : MonoBehaviour
                 }
                 else if (holeCount > 0)
                 {
-                    DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
+                    if (!_grid[x, y].DoesFall)
+                    {
+                        holeCount = 0;
+                    }
+                    else DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
                 }
             }
 
@@ -260,6 +267,7 @@ public class Board : MonoBehaviour
             if (drop.fromY < _grid.SizeY)
             {
                 tile = _grid[drop.coordinates.x, drop.fromY];
+                _grid[tile.PositionOnBoard] = null;
             }
             else
             {
@@ -268,7 +276,8 @@ public class Board : MonoBehaviour
                     typeToSpawn, drop.coordinates.x, drop.fromY + NewDropOffset,this
                 );
             }
-
+            
+            
             _grid[drop.coordinates] = tile;
             tile.PositionOnBoard = drop.coordinates;
             tile.SetSortingOrder(drop.coordinates.y);
@@ -327,8 +336,8 @@ public class Board : MonoBehaviour
 
     public void ElementDespawned(int2 positionOnBoard)
     {
-        NeedsFilling = true;
         _grid[positionOnBoard] = null;
+        NeedsFilling = true;
     }
 }
 

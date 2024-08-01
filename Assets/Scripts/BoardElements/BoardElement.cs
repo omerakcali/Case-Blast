@@ -12,6 +12,7 @@ public abstract class BoardElement : MonoBehaviour
 
     [SerializeField] private List<BoardElementState> States = new();
     public abstract BoardElementType ElementType { get; }
+    public abstract bool DoesFall { get; }
     public int2 PositionOnBoard { get; set; }
     private BoardElementPool<BoardElement> _pool;
     

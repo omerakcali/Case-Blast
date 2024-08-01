@@ -30,6 +30,7 @@ public class HintManager : MonoBehaviour
             {
                 var c = new int2(i, j);
                 if(_checkedCoordinates.Contains(c)) continue;
+                if(Board[c]==null) continue;
                 if (FindGroups(c))
                 {
                     bool isTnt = _foundGroup.Count >= Board.TNTCellCount;
@@ -71,6 +72,7 @@ public class HintManager : MonoBehaviour
 
                 var horizontalNeighbor = tile + new int2(i, 0);
                 if (Board.AreValidCoordinates(horizontalNeighbor)
+                    && Board[horizontalNeighbor] != null
                     && !_closedList.Contains(horizontalNeighbor)
                     && !_openList.Contains(horizontalNeighbor)
                     && Board[horizontalNeighbor].ElementType == selectedDropType)
@@ -81,6 +83,7 @@ public class HintManager : MonoBehaviour
 
                 var verticalNeighbor = tile + new int2(0, i);
                 if (Board.AreValidCoordinates(verticalNeighbor)
+                    && Board[verticalNeighbor] != null
                     && !_closedList.Contains(verticalNeighbor)
                     && !_openList.Contains(verticalNeighbor)
                     && Board[verticalNeighbor].ElementType == selectedDropType)

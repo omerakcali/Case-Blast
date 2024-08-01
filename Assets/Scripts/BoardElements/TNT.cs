@@ -8,6 +8,7 @@ public class TNT : BoardElement
 {
     [SerializeField] private Vector2Int ExplosionSize;
     public override BoardElementType ElementType => BoardElementType.TNT;
+    public override bool DoesFall => true;
 
     private bool _popped;
     

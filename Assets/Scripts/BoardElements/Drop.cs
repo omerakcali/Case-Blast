@@ -11,6 +11,8 @@ public class Drop : BoardElement, IPopsWithParticle
     public Vector3 GetPosition() => transform.position;
 
     public override BoardElementType ElementType => Type;
+    public override bool DoesFall => true;
+
     public override void OnClick(Action makeMoveAction)
     {
         if (_board.TryMove(PositionOnBoard))
