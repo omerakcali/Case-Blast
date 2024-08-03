@@ -9,6 +9,11 @@ public class Box : BoardElement
     public override bool DoesFall => false;
     public override void OnClick(Action makeMoveAction)
     {
-        throw new NotImplementedException();
+        
+    }
+
+    public override void AlertMatchOnNeighborCell()
+    {
+        Pop();
     }
 }

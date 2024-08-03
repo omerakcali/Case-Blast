@@ -44,7 +44,7 @@ public class TNT : BoardElement
                 if (_board.AreValidCoordinates(c))
                 {
                     if(_board[c]!=null)
-                        _board[c].Pop();
+                        _board[c].HitByExplosion();
                 }
             }
         }

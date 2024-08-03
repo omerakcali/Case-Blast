@@ -126,11 +126,16 @@ public abstract class BoardElement : MonoBehaviour
         return 0;
     }
 
-    public void AlertMatchOnNeighborCell()
+    public virtual void AlertMatchOnNeighborCell()
     {
         
     }
-    
+
+    public virtual void HitByExplosion()
+    {
+        Pop();
+    }
+
     [Serializable]
     private class BoardElementState
     {
@@ -144,7 +149,6 @@ public abstract class BoardElement : MonoBehaviour
         }
     }
 }
-
 
 public enum BoardElementType
 {
