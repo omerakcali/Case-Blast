@@ -72,7 +72,9 @@ public class Board : MonoBehaviour
         {
             for (int x = 0; x < Size.x; x++)
             {
-                var type = CurrentLevel.PopulateRandomly
+                bool isRandom = CurrentLevel.Grid[y * Size.x + x] == BoardElementType.RandomDrop;
+                
+                var type = isRandom
                     ? CurrentLevel.TypesToSpawn[Random.Range(0, CurrentLevel.TypesToSpawn.Count)]
                     : CurrentLevel.Grid[y * Size.x + x];
                 _grid[x, y] = SpawnBoardElement(type, x, y,this);

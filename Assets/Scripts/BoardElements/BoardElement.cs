@@ -152,7 +152,7 @@ public abstract class BoardElement : MonoBehaviour
 
 public enum BoardElementType
 {
-    Empty = 0,
+    RandomDrop = 0, //only for leveldata
     GreenDrop = 1,
     BlueDrop = 2,
     YellowDrop = 4,
