@@ -20,13 +20,6 @@ public class Drop : BoardElement, IPopsWithParticle
             makeMoveAction.Invoke();
         }
     }
-
-    public override void Pop()
-    {
-        /*ParticleManager.Instance.PlayParticle(this);
-        SoundManager.Instance.PlaySound("pop_cube");*/
-        base.Pop();
-    }
 }
 
 public interface IPopsWithParticle

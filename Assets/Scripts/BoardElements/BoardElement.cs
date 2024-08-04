@@ -38,6 +38,12 @@ public abstract class BoardElement : MonoBehaviour
 
     public virtual void Pop()
     {
+        if (GameGoalTracker.Instance.HasGoal(ElementType))
+        {
+            var tweenItem = GoalTweenManager.Instance.GetTweenItem();
+            tweenItem.PlayTween(this);
+        }
+        
         Despawn();
     }
 
@@ -116,6 +122,12 @@ public abstract class BoardElement : MonoBehaviour
         tween.SetEase(Ease.InOutSine);
         tween.OnComplete(() =>
         {
+            if (GameGoalTracker.Instance.HasGoal(ElementType))
+            {
+                GameGoalTracker.Instance.ProgressGoal(ElementType);
+                GameGoalTracker.Instance.GetGoalItemTarget(ElementType).Refresh();
+            }
+            
             Despawn();
         });
         return tween;

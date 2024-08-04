@@ -28,7 +28,7 @@ public class HintManager : MonoBehaviour
         {
             for (int j = 0; j < Board.Size.x; j++)
             {
-                var c = new int2(i, j);
+                var c = new int2(j, i);
                 if(_checkedCoordinates.Contains(c)) continue;
                 if(Board[c]==null) continue;
                 if (FindGroups(c))
