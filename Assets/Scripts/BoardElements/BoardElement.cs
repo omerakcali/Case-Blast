@@ -42,6 +42,7 @@ public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
         if (GameGoalTracker.Instance.HasGoal(ElementType))
         {
             GameGoalTracker.Instance.ProgressGoal(ElementType);
+            GameGoalTracker.Instance.GetGoalItemTarget(ElementType).Refresh();
             /*var tweenItem = GoalTweenManager.Instance.GetTweenItem();
             tweenItem.PlayTween(this);*/
         }

@@ -5,10 +5,7 @@ using UnityEngine;
 
 public class Drop : BoardElement
 {
-    [SerializeField] private Color ParticleColor;
     [SerializeField] private BoardElementType Type;
-    public Vector3 GetPosition() => transform.position;
-
     public override BoardElementType ElementType => Type;
     public override bool DoesFall => true;
 

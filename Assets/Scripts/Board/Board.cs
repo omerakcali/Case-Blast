@@ -18,7 +18,9 @@ public class Board : MonoBehaviour
     public int2 Size => CurrentLevel.GridSize;
 
     public static event Action<LevelInfo> LevelLoadEvent;
-
+    
+    [SerializeField] private SpriteRenderer BorderSprite;
+    [SerializeField] private Vector2 BorderPadding;
     [SerializeField] private BoardPoolManager BoardPoolManager;
     [SerializeField, Range(0.1f, 20f)] float DropSpeed = 8f;
     [SerializeField, Range(0, 10)] int NewDropOffset = 2;
@@ -64,6 +66,8 @@ public class Board : MonoBehaviour
         }
 
         FillGrid();
+        BorderSprite.size = new Vector2(Size.x, Size.y) +BorderPadding;
+
     }
 
     private void FillGrid()
