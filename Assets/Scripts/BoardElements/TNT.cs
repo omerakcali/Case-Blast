@@ -48,6 +48,6 @@ public class TNT : BoardElement
                 }
             }
         }
-        base.Pop();
+        Despawn();
     }
 }

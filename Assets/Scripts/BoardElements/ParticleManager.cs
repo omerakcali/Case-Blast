@@ -26,7 +26,7 @@ public class ParticleManager : MonoBehaviour
         ParticleInstance.Init(this);
     }
 
-    /*public void PlayParticle(IPopsWithParticle boardElement)
+    public void PlayParticle(IPopsWithParticle boardElement)
     {
         _disabledParticles.TryPop(out var particleToPlay);
 
@@ -37,7 +37,7 @@ public class ParticleManager : MonoBehaviour
         }
 
         particleToPlay.Play(boardElement);
-    }*/
+    }
 
     public void RecycleParticle(PopParticle particle)
     {

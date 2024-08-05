@@ -104,6 +104,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 9146812897610339571}
   States: []
+  ParticleSprites:
+  - {fileID: 21300000, guid: f5919e522554d5843b5225c30a9f3428, type: 3}
+  - {fileID: 21300000, guid: fdcb87decd41b2f48bc1aafc4e2081c6, type: 3}
+  - {fileID: 21300000, guid: c62cc83111d024e4c8425db38376c335, type: 3}
 --- !u!212 &9146812897610339571 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3924157139263228359, guid: d6db47ac2031eb342b25495c174e0710, type: 3}

@@ -104,7 +104,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteRenderer: {fileID: 9146812897610339571}
   States: []
-  ExplosionSize: {x: 1, y: 1}
+  ParticleSprites: []
+  ExplosionSize: {x: 2, y: 2}
 --- !u!212 &9146812897610339571 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3924157139263228359, guid: d6db47ac2031eb342b25495c174e0710, type: 3}

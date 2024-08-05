@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drop : BoardElement, IPopsWithParticle
+public class Drop : BoardElement
 {
     [SerializeField] private Color ParticleColor;
     [SerializeField] private BoardElementType Type;
-    public Color GetParticleColor() => ParticleColor;
     public Vector3 GetPosition() => transform.position;
 
     public override BoardElementType ElementType => Type;
@@ -20,11 +19,5 @@ public class Drop : BoardElement, IPopsWithParticle
             makeMoveAction.Invoke();
         }
     }
-}
-
-public interface IPopsWithParticle
-{
-    public Color GetParticleColor();
-    public Vector3 GetPosition();
 }
 

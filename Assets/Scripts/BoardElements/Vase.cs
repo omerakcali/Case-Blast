@@ -41,6 +41,7 @@ public class Vase:BoardElement
         }
         else
         {
+            ParticleManager.Instance.PlayParticle(this);
             Refresh();
         }
     }

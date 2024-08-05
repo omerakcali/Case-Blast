@@ -108,6 +108,10 @@ MonoBehaviour:
     Sprite: {fileID: 21300000, guid: 856d27f0544991a429d410b8eb407d06, type: 3}
   - Key: HP_1
     Sprite: {fileID: 21300000, guid: 75b31a397621ef64cafc81cfb0ee5f5c, type: 3}
+  ParticleSprites:
+  - {fileID: 21300000, guid: 337f0796b04a2e1469462640ff4dcaa1, type: 3}
+  - {fileID: 21300000, guid: 2aa0a148c0d2cd747b2ab51d8f6fc3e1, type: 3}
+  - {fileID: 21300000, guid: b64c92b1ff09d494587b5a91ec8b459f, type: 3}
   HitPoint: 2
 --- !u!212 &9146812897610339571 stripped
 SpriteRenderer:

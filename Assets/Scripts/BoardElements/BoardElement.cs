@@ -6,11 +6,12 @@ using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 
-public abstract class BoardElement : MonoBehaviour
+public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
 {
     [SerializeField] private SpriteRenderer SpriteRenderer;
 
     [SerializeField] private List<BoardElementState> States = new();
+    [SerializeField] private List<Sprite> ParticleSprites;
     public abstract BoardElementType ElementType { get; }
     public abstract bool DoesFall { get; }
     public int2 PositionOnBoard { get; set; }
@@ -40,9 +41,12 @@ public abstract class BoardElement : MonoBehaviour
     {
         if (GameGoalTracker.Instance.HasGoal(ElementType))
         {
-            var tweenItem = GoalTweenManager.Instance.GetTweenItem();
-            tweenItem.PlayTween(this);
+            GameGoalTracker.Instance.ProgressGoal(ElementType);
+            /*var tweenItem = GoalTweenManager.Instance.GetTweenItem();
+            tweenItem.PlayTween(this);*/
         }
+
+        ParticleManager.Instance.PlayParticle(this);
         
         Despawn();
     }
@@ -133,11 +137,6 @@ public abstract class BoardElement : MonoBehaviour
         return tween;
     }
 
-    public virtual float GetPopAnimationDuration()
-    {
-        return 0;
-    }
-
     public virtual void AlertMatchOnNeighborCell()
     {
         
@@ -159,6 +158,16 @@ public abstract class BoardElement : MonoBehaviour
             Key = key;
             Sprite = sprite;
         }
+    }
+
+    public List<Sprite> GetParticleSprites()
+    {
+        return ParticleSprites;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 }
 

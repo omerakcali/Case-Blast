@@ -21,6 +21,10 @@ PrefabInstance:
       value: Hint_TNT
       objectReference: {fileID: 0}
     - target: {fileID: 573300505736968896, guid: d6db47ac2031eb342b25495c174e0710, type: 3}
+      propertyPath: ParticleSprites.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 573300505736968896, guid: d6db47ac2031eb342b25495c174e0710, type: 3}
       propertyPath: States.Array.data[0].Sprite
       value: 
       objectReference: {fileID: 21300000, guid: aa5f34c4b171c0e4c8dc1f20acd0e7d8, type: 3}
@@ -28,6 +32,10 @@ PrefabInstance:
       propertyPath: States.Array.data[1].Sprite
       value: 
       objectReference: {fileID: 21300000, guid: be5e4ee272e4dc040ae4481492df5853, type: 3}
+    - target: {fileID: 573300505736968896, guid: d6db47ac2031eb342b25495c174e0710, type: 3}
+      propertyPath: ParticleSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8ca9b3171eaf25643ba7475a6cee9901, type: 3}
     - target: {fileID: 3455526647502567766, guid: d6db47ac2031eb342b25495c174e0710, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
