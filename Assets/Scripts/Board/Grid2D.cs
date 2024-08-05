@@ -1,4 +1,6 @@
+using System;
 using Unity.Mathematics;
+using UnityEngine;
 
 [System.Serializable]
 public struct Grid2D<T>
@@ -23,10 +25,18 @@ public struct Grid2D<T>
     
     public T this[int x, int y]
     {
-        get => cells[y * size.x + x];
-        set => cells[y * size.x + x] = value;
+        get
+        {
+            if (y < 0 || y >= Size.y || x < 0 || x >= Size.x) throw new IndexOutOfRangeException();
+            return cells[y * size.x + x];
+        }
+        set
+        {
+            if (y < 0 || y >= Size.y || x < 0 || x >= Size.x) throw new IndexOutOfRangeException();
+            cells[y * size.x + x] = value;
+        }
     }
-	
+
     public T this[int2 c]
     {
         get => cells[c.y * size.x + c.x];

@@ -112,7 +112,7 @@ public class HintManager : MonoBehaviour
         {
             for (int j = 0; j < Board.Size.x; j++)
             {
-                var element = Board[i, j];
+                var element = Board[j, i];
                 if(element == null) continue;
                 if (element.ElementType.IsDrop()) element.SetState("Default");
             }

@@ -1283,7 +1283,7 @@ GameObject:
   - component: {fileID: 1318773936}
   - component: {fileID: 1318773935}
   m_Layer: 5
-  m_Name: MainCanvas (1)
+  m_Name: BGCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
