@@ -242,6 +242,7 @@ public class Board : MonoBehaviour
         for (int x = 0; x < Size.x; x++)
         {
             int holeCount = 0;
+            int indexOnColumn = 0;
             for (int y = 0; y < Size.y; y++)
             {
                 if (_grid[x, y] == null)
@@ -254,13 +255,13 @@ public class Board : MonoBehaviour
                     {
                         holeCount = 0;
                     }
-                    else DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount));
+                    else DroppedTiles.Add(new TileDrop(x, y - holeCount, holeCount,indexOnColumn++));
                 }
             }
 
-            for (int h = 1; h <= holeCount; h++)
+            for (int h = holeCount; h >= 1; h--)
             {
-                DroppedTiles.Add(new TileDrop(x, Size.y - h, holeCount));
+                DroppedTiles.Add(new TileDrop(x, Size.y - h, holeCount,indexOnColumn++));
             }
         }
 
@@ -288,7 +289,7 @@ public class Board : MonoBehaviour
             tile.PositionOnBoard = drop.coordinates;
             tile.SetSortingOrder(drop.coordinates.y);
             _busyDuration = Mathf.Max(
-                tile.Fall(drop.coordinates.y + _tileOffset.y, DropSpeed), _busyDuration
+                tile.Fall(drop.coordinates.y + _tileOffset.y, DropSpeed,drop.index), _busyDuration
             );
         }
     }
@@ -352,14 +353,15 @@ public class Board : MonoBehaviour
 public struct TileDrop
 {
     public int2 coordinates;
-
     public int fromY;
+    public int index;
 
-    public TileDrop(int x, int y, int distance)
+    public TileDrop(int x, int y, int distance, int index)
     {
         coordinates.x = x;
         coordinates.y = y;
         fromY = y + distance;
+        this.index = index;
     }
 }
 

@@ -82,15 +82,15 @@ public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
         _pool.Recycle(this);
     }
 
-    public float Fall(float toY, float speed)
+    public float Fall(float toY, float speed,int delay)
     {
         falling.fromY = transform.localPosition.y;
         falling.toY = toY;
         falling.duration = (falling.fromY - toY) / speed;
         falling.progress = 0f;
-        transform.DOLocalMoveY(falling.toY, falling.duration).SetEase(Ease.Linear);
+        transform.DOLocalMoveY(falling.toY, falling.duration).SetEase(Ease.InSine).SetDelay(delay*0.05f);
         //enabled = true;
-        return falling.duration;
+        return falling.duration + delay*.05f;
     }
 
     /*void Update()

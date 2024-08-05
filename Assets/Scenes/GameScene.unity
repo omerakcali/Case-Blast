@@ -1877,7 +1877,7 @@ MonoBehaviour:
   BorderSprite: {fileID: 1692457093}
   BorderPadding: {x: 0.3, y: 0.4}
   BoardPoolManager: {fileID: 1309450810}
-  DropSpeed: 8
+  DropSpeed: 10.1
   NewDropOffset: 2
 --- !u!4 &1819478733
 Transform:
