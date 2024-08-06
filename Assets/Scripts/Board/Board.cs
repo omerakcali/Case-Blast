@@ -16,7 +16,6 @@ public class Board : MonoBehaviour
     public bool NeedsFilling { get; private set; }
     public LevelInfo CurrentLevel { get; private set; }
     public int2 Size => CurrentLevel.GridSize;
-
     public static event Action<LevelInfo> LevelLoadEvent;
     
     [SerializeField] private SpriteRenderer BorderSprite;
@@ -26,19 +25,18 @@ public class Board : MonoBehaviour
     [SerializeField, Range(0, 10)] int NewDropOffset = 2;
 
     public bool IsPlaying => !_levelFinished && !_grid.IsUndefined;
-    private float _busyDuration;
-    public bool CanPlay => _busyDuration <= 0;
+    public bool CanPlay => _busyDuration <= 0 && _boardStateLockerCount ==0 && !NeedsFilling;
 
     private Grid2D<BoardElement> _grid;
     public BoardElement this[int x, int y] => _grid[x, y];
     public BoardElement this[int2 c] => _grid[c];
 
     private List<int2> _alertedBoardElements = new();
-
     private float2 _tileOffset;
     private Sequence _mergeSequence;
     private bool _levelFinished;
-    
+    private float _busyDuration;
+    private int _boardStateLockerCount = 0;
     public const int TNTCellCount =5;
 
     public void StartNewGame(LevelInfo level)
@@ -60,6 +58,7 @@ public class Board : MonoBehaviour
             {
                 for (int x = 0; x < _grid.SizeX; x++)
                 {
+                    if(_grid[x,y] == null) continue;
                     _grid[x, y].Despawn();
                 }
             }
@@ -95,7 +94,15 @@ public class Board : MonoBehaviour
         return element;
     }
 
+    public void LockBoardState()
+    {
+        _boardStateLockerCount++;
+    }
 
+    public void UnlockBoardState()
+    {
+        _boardStateLockerCount--;
+    }
     public bool TryMove(int2 coordinates)
     {
         return FindMatches(coordinates);
@@ -182,7 +189,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    void ProcessMatches()
+    private void ProcessMatches()
     {
         bool isMerge = MatchedCoordinates.Count >= TNTCellCount;
         Merge = isMerge
@@ -202,7 +209,7 @@ public class Board : MonoBehaviour
                 _grid[c].Pop();
             }
 
-            AlertMatchNeighbors(c);
+            AlertMatchesToNeighbors(c);
         }
 
         if (Merge.HasValue) // handle merges into TNT
@@ -213,7 +220,7 @@ public class Board : MonoBehaviour
         MatchedCoordinates.Clear();
     }
 
-    void ProcessMerge()
+    private void ProcessMerge()
     {
         var merge = Merge.Value;
         var targetPosition = _grid[merge.Destination].transform.position;
@@ -235,7 +242,7 @@ public class Board : MonoBehaviour
         );
     }
 
-    void DropTiles()
+    private void DropTiles()
     {
         DroppedTiles.Clear();
 
@@ -284,10 +291,8 @@ public class Board : MonoBehaviour
                 );
             }
             
-            
             _grid[drop.coordinates] = tile;
             tile.PositionOnBoard = drop.coordinates;
-            tile.SetSortingOrder(drop.coordinates.y);
             _busyDuration = Mathf.Max(
                 tile.Fall(drop.coordinates.y + _tileOffset.y, DropSpeed,drop.index), _busyDuration
             );
@@ -307,9 +312,8 @@ public class Board : MonoBehaviour
     {
         _levelFinished = true;
     }
-
-
-    private void AlertMatchNeighbors(int2 tile)
+    
+    private void AlertMatchesToNeighbors(int2 tile)
     {
         for (int i = -1; i <= +1; i++)
         {

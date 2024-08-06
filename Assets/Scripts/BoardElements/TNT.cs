@@ -37,6 +37,7 @@ public class TNT : BoardElement
         {
             return;
         }
+        _board.LockBoardState();
         ParticleGO.SetActive(true);
         _popped = true;
         DOVirtual.DelayedCall(.15f, () =>
@@ -55,6 +56,7 @@ public class TNT : BoardElement
                     }
                 }
             }
+            _board.UnlockBoardState();
             Despawn();
         });
     }

@@ -14,7 +14,18 @@ public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
     [SerializeField] private List<Sprite> ParticleSprites;
     public abstract BoardElementType ElementType { get; }
     public abstract bool DoesFall { get; }
-    public int2 PositionOnBoard { get; set; }
+    private int2 _position;
+
+    public int2 PositionOnBoard
+    {
+        get => _position;
+        set
+        {
+          SetSortingOrder(value.y);
+          _position = value;
+        }
+    }
+
     private BoardElementPool<BoardElement> _pool;
     
     [System.Serializable]
@@ -114,7 +125,7 @@ public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
         }
     }*/
 
-    public virtual void SetSortingOrder(int order)
+    protected virtual void SetSortingOrder(int order)
     {
         SpriteRenderer.sortingOrder = order;
     }
