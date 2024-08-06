@@ -17,8 +17,14 @@ public class GameManager : MonoBehaviour
     private int2? _mouseDownCoordinate;
 
     public int CurrentMoveCount { get; private set; }
-
+    public int CurrentLevelIndex { get; private set; }
+    public LevelInfo CurrentLevel => LevelLibrary.Levels[CurrentLevelIndex];
     private bool _playableStateDirty=true;
+
+    private void Awake()
+    {
+        CurrentLevelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
+    }
 
     void Update ()
     {
@@ -41,14 +47,14 @@ public class GameManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartGame();
+            LoadCurrentLevel();
         }
     }
 
-    public void StartGame()
+    public void LoadCurrentLevel()
     {
-        CurrentMoveCount = LevelLibrary.Level.MoveCount;
-        Board.StartNewGame(LevelLibrary.Level);
+        CurrentMoveCount = CurrentLevel.MoveCount;
+        Board.StartNewGame(CurrentLevel);
     }
 
     void HandleInput()
@@ -106,6 +112,8 @@ public class GameManager : MonoBehaviour
 
     public void WinLevel()
     {
+        CurrentLevelIndex++;
+        PlayerPrefs.SetInt("LevelIndex",CurrentLevelIndex);
         Board.FinishLevel();
         LevelFinishEvent?.Invoke(true);
     }
