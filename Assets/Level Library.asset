@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3f2d752e27d7ee4e8a77b398a86b108, type: 3}
-  m_Name: New Level Library
+  m_Name: Level Library
   m_EditorClassIdentifier: 
   LevelFiles:
   - {fileID: 4900000, guid: 64eaa979ea1d4634a955dc03ad1aeaa2, type: 3}
