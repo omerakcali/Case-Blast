@@ -183,7 +183,7 @@ public class Board : MonoBehaviour
         {
             ProcessMatches();
         }
-        else if (NeedsFilling)
+        else if (NeedsFilling && _boardStateLockerCount == 0)
         {
             DropTiles();
         }
