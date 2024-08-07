@@ -26,6 +26,11 @@ public class GameManager : MonoBehaviour
         CurrentLevelIndex = PlayerPrefs.GetInt("LevelIndex", 0);
     }
 
+    private void Start()
+    {
+        LoadCurrentLevel();
+    }
+
     void Update ()
     {
         if (Board.IsPlaying)
@@ -45,10 +50,10 @@ public class GameManager : MonoBehaviour
             }
             Board.DoWork();
         }
-        else if (Input.GetKeyDown(KeyCode.Space))
+        /*else if (Input.GetKeyDown(KeyCode.Space))
         {
             LoadCurrentLevel();
-        }
+        }*/
     }
 
     public void LoadCurrentLevel()
