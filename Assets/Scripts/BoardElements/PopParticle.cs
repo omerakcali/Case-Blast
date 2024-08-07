@@ -24,7 +24,7 @@ public class PopParticle : MonoBehaviour
         }
         transform.position = drop.GetPosition();
         gameObject.SetActive(true);
-        DOVirtual.DelayedCall(1.5f, Die);
+        DOVirtual.DelayedCall(1.5f, Die).SetLink(gameObject);
     }
 
     private void Die()

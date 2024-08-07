@@ -118,4 +118,10 @@ public class HintManager : MonoBehaviour
             }
         }
     }
+    
+    private void OnDestroy()
+    {
+        GameManager.MoveMadeEvent -= OnMoveMade;
+        GameManager.BoardPlayableEvent -= OnBoardPlayable;
+    }
 }

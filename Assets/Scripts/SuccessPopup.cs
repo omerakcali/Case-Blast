@@ -1,15 +1,28 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SuccessPopup : MonoBehaviour
 {
     [SerializeField] private CanvasGroup CanvasGroup;
     [SerializeField] private Transform Root;
+    [SerializeField] private Button Button;
+
+    private void Awake()
+    {
+        GameManager.LevelFinishEvent += OnLevelFinish;
+    }
 
     private void Start()
     {
         gameObject.SetActive(false);
-        GameManager.LevelFinishEvent += OnLevelFinish;
+        Button.onClick.AddListener(OnClick);
+    }
+
+    private void OnClick()
+    {
+        SceneLoadManager.Instance.LoadMenuScene();
     }
 
     private void OnLevelFinish(bool isWin)
@@ -28,5 +41,10 @@ public class SuccessPopup : MonoBehaviour
         {
             CanvasGroup.interactable = true;
         });
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.LevelFinishEvent -= OnLevelFinish;
     }
 }

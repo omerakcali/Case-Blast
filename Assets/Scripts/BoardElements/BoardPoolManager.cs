@@ -28,4 +28,12 @@ public class BoardPoolManager : MonoBehaviour
     {
         return _dictionary[type].GetSprite();
     }
+
+    private void OnDestroy()
+    {
+        foreach (var boardElement in boardElementPrefabs)
+        {
+            boardElement.ClearPool();
+        }
+    }
 }

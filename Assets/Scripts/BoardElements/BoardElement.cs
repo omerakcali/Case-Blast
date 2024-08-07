@@ -181,6 +181,11 @@ public abstract class BoardElement : MonoBehaviour, IPopsWithParticle
     {
         return transform.position;
     }
+
+    public void ClearPool()
+    {
+        _pool.DestroyPool();
+    }
 }
 
 public enum BoardElementType

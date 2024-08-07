@@ -14,10 +14,14 @@ public class FailPopup : MonoBehaviour
     [SerializeField] private CanvasGroup CanvasGroup;
     [SerializeField] private GameManager GameManager;
 
-    private void Start()
+    private void Awake()
     {
         GameManager.LevelFinishEvent += OnLevelFinish;
-        
+    }
+
+    private void Start()
+    {
+
         TryAgainButton.onClick.AddListener(OnTryAgainPressed);
         ReturnButton.onClick.AddListener(ReturnToMenu);
         CloseButton.onClick.AddListener(ReturnToMenu);
@@ -26,7 +30,7 @@ public class FailPopup : MonoBehaviour
 
     private void ReturnToMenu()
     {
-        throw new NotImplementedException();
+        DOClose().OnComplete(SceneLoadManager.Instance.LoadMenuScene);
     }
 
     private void OnTryAgainPressed()
@@ -36,7 +40,7 @@ public class FailPopup : MonoBehaviour
 
     private void OnLevelFinish(bool isWin)
     {
-        if(isWin) return;
+        if (isWin) return;
         Show();
     }
 
@@ -45,10 +49,7 @@ public class FailPopup : MonoBehaviour
         gameObject.SetActive(true);
         CanvasGroup.interactable = false;
         CanvasGroup.DOFade(1f, .3f).From(.35f);
-        Root.DOScale(1f, .3f).From(.15f).SetEase(Ease.OutBack).OnComplete(() =>
-        {
-            CanvasGroup.interactable = true;
-        });
+        Root.DOScale(1f, .3f).From(.15f).SetEase(Ease.OutBack).OnComplete(() => { CanvasGroup.interactable = true; });
     }
 
     private Tween DOClose()
@@ -58,5 +59,10 @@ public class FailPopup : MonoBehaviour
             CanvasGroup.interactable = false;
             Root.DOScale(.2f, .3f);
         });
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.LevelFinishEvent -= OnLevelFinish;
     }
 }

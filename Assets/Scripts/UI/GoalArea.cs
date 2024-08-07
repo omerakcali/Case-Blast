@@ -9,16 +9,16 @@ public class GoalArea : MonoBehaviour
     [SerializeField] private List<GoalItem> GoalItems;
     [SerializeField] private BoardPoolManager BoardPoolManager;
 
-    private Dictionary<BoardElementType, GoalItem> _dictionary;
+    private Dictionary<BoardElementType, GoalItem> _dictionary = new();
 
-    private void Start()
+    private void Awake()
     {
         Board.LevelLoadEvent += OnLevelLoad;
     }
 
     private void OnLevelLoad(LevelInfo obj)
     {
-        _dictionary = new();
+        _dictionary.Clear();
         for (var i = 0; i < GoalItems.Count; i++)
         {
             if(i< obj.Goals.Count)
@@ -37,5 +37,10 @@ public class GoalArea : MonoBehaviour
     public GoalItem GetGoalItem(BoardElementType type)
     {
         return _dictionary[type];
+    }
+
+    private void OnDestroy()
+    {
+        Board.LevelLoadEvent -= OnLevelLoad;
     }
 }

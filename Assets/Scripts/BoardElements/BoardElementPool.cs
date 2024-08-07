@@ -30,4 +30,9 @@ public struct BoardElementPool<T> where T: BoardElement
         _pool.Push(instance);
         instance.gameObject.SetActive(false);
     }
+
+    public void DestroyPool()
+    {
+        _pool?.Clear();
+    }
 }
