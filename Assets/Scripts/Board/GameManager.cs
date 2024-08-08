@@ -119,6 +119,16 @@ public class GameManager : MonoBehaviour
     {
         CurrentLevelIndex++;
         PlayerPrefs.SetInt("LevelIndex",CurrentLevelIndex);
+        StartCoroutine(WaitBoardAnimation());
+    }
+    
+    private IEnumerator WaitBoardAnimation()
+    {
+        yield return null;
+        while (!Board.CanPlay)
+        {
+            yield return null;
+        }
         Board.FinishLevel();
         LevelFinishEvent?.Invoke(true);
     }
